@@ -33,8 +33,8 @@ export class Name {
             let retVal = "";
         for (const i in this.components) {
             var component = this.components[i];
-            // TODO inspect string, un-escape characters
             retVal += component;
+            if (component == this.components[this.components.length - 1]) return retVal;    
             retVal += delimiter;
         }
         return retVal;
@@ -45,12 +45,31 @@ export class Name {
      * Machine-readable means that from a data string, a Name can be parsed back in
      * The control characters in the data string are the default characters
      */
+
     public asDataString(): string {
-            let retVal = "";
+            let retVal = ``;
         for (const i in this.components) {
             var component = this.components[i];
             retVal += component;
+            if (component == this.components[this.components.length - 1]) break;  
             retVal += this.delimiter;
+        }
+        
+        let done = false;
+        let i = 0;
+        while (!done) {
+            done = true;
+            for (i; i < retVal.length; i++) {
+                const char = retVal[i];
+                if(char == ESCAPE_CHARACTER) {
+                    done = false;
+                }
+                if (!done) break;
+            }
+            if (!done) {
+                retVal = retVal.slice(0,i) + ESCAPE_CHARACTER + ESCAPE_CHARACTER + retVal.slice(i+1);
+            }
+            i+=2;
         }
         return retVal;
     }
@@ -80,7 +99,7 @@ export class Name {
     }
 
     public remove(i: number): void {
-        this.components.splice(i,1);
+        this.components = this.components.splice(i,1);
     }
 
 }
