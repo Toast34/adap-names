@@ -99,7 +99,7 @@ export class Name {
     }
 
     public remove(i: number): void {
-        this.components = this.components.splice(i,1);
+        this.components.splice(i,1);
     }
 
 }
