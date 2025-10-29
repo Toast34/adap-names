@@ -8,51 +8,67 @@ export class StringName implements Name {
     protected noComponents: number = 0;
 
     constructor(source: string, delimiter?: string) {
-        throw new Error("needs implementation or deletion");
+        this.name = source;
+        if(delimiter) this.delimiter = delimiter;
+        this.noComponents = this.name.split(this.delimiter).length
     }
 
     public asString(delimiter: string = this.delimiter): string {
-        throw new Error("needs implementation or deletion");
+        return this.name;
     }
 
     public asDataString(): string {
-        throw new Error("needs implementation or deletion");
+        // TODO double Escape Characters
+        return this.name;
     }
 
     public getDelimiterCharacter(): string {
-        throw new Error("needs implementation or deletion");
+        return this.delimiter;
     }
 
     public isEmpty(): boolean {
-        throw new Error("needs implementation or deletion");
+        return this.noComponents == 0;
     }
 
     public getNoComponents(): number {
-        throw new Error("needs implementation or deletion");
+        return this.noComponents;
     }
 
     public getComponent(x: number): string {
-        throw new Error("needs implementation or deletion");
+        return this.name.split(this.delimiter)[x];
     }
 
     public setComponent(n: number, c: string): void {
-        throw new Error("needs implementation or deletion");
+        let newString = this.name.split(this.delimiter);
+        newString[n] = c;
+        this.name = newString.join(this.delimiter);
     }
 
     public insert(n: number, c: string): void {
-        throw new Error("needs implementation or deletion");
+        let newString = this.name.split(this.delimiter);
+        newString.splice(n,0,c)
+        this.name = newString.join(this.delimiter);
+        this.noComponents++;
     }
 
     public append(c: string): void {
-        throw new Error("needs implementation or deletion");
+        let newString = this.name.split(this.delimiter);
+        newString.concat(c);
+        this.name = newString.join(this.delimiter);
+        this.noComponents++;
     }
 
     public remove(n: number): void {
-        throw new Error("needs implementation or deletion");
+        if (this.noComponents == 0) return;
+        let newString = this.name.split(this.delimiter);
+        newString.splice(n,1);
+        this.name = newString.join(this.delimiter);
+        this.noComponents--;
     }
 
     public concat(other: Name): void {
-        throw new Error("needs implementation or deletion");
+        this.name += other.asString();
+        this.noComponents += other.getNoComponents();
     }
 
 }
