@@ -18,8 +18,25 @@ export class StringName implements Name {
     }
 
     public asDataString(): string {
-        // TODO double Escape Characters
-        return this.name;
+        if (!this.name.includes(ESCAPE_CHARACTER)) return this.name;
+        let retVal = this.name;
+        let done = false;
+        let i = 0;
+        while (!done) {
+            done = true;
+            for (i; i < retVal.length; i++) {
+                const char = retVal[i];
+                if(char == ESCAPE_CHARACTER) {
+                    done = false;
+                }
+                if (!done) break;
+            }
+            if (!done) {
+                retVal = retVal.slice(0,i) + ESCAPE_CHARACTER + ESCAPE_CHARACTER + retVal.slice(i+1);
+            }
+            i+=2;
+        }
+        return retVal;
     }
 
     public getDelimiterCharacter(): string {
