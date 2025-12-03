@@ -1,69 +1,69 @@
 import { DEFAULT_DELIMITER, ESCAPE_CHARACTER } from "../common/Printable";
 import { Name } from "./Name";
 import { AbstractName } from "./AbstractName";
+import { IllegalArgumentException } from "../common/IllegalArgumentException";
+import { InvalidStateException } from "../common/InvalidStateException";
+import { MethodFailedException } from "../common/MethodFailedException";
 
 export class StringArrayName extends AbstractName {
 
     protected components: string[] = [];
 
     constructor(source: string[], delimiter?: string) {
-        super();
-        throw new Error("needs implementation or deletion");
-    }
-
-    public clone(): Name {
-        throw new Error("needs implementation or deletion");
-    }
-
-    public asString(delimiter: string = this.delimiter): string {
-        throw new Error("needs implementation or deletion");
-    }
-
-    public asDataString(): string {
-        throw new Error("needs implementation or deletion");
-    }
-
-    public isEqual(other: Name): boolean {
-        throw new Error("needs implementation or deletion");
-    }
-
-    public getHashCode(): number {
-        throw new Error("needs implementation or deletion");
-    }
-
-    public isEmpty(): boolean {
-        throw new Error("needs implementation or deletion");
-    }
-
-    public getDelimiterCharacter(): string {
-        throw new Error("needs implementation or deletion");
+        super(delimiter);
+        this.components = source;
     }
 
     public getNoComponents(): number {
-        throw new Error("needs implementation or deletion");
+        return this.components.length
     }
 
     public getComponent(i: number): string {
-        throw new Error("needs implementation or deletion");
+        try {
+            IllegalArgumentException.assert(i >= 0 && i < this.components.length, "i is out of bounds");
+        }
+        catch (e) {
+            return ""
+        }
+        return this.components[i];
     }
 
-    public setComponent(i: number, c: string) {
-        throw new Error("needs implementation or deletion");
+    public setComponent(i: number, c: string): void {
+        try {
+            IllegalArgumentException.assert(i >= 0 && i < this.components.length, "i is out of bounds");
+        }
+        catch (e) {
+            return
+        }
+        this.components[i] = c;
+        MethodFailedException.assert(this.getComponent(i) == c);
     }
 
-    public insert(i: number, c: string) {
-        throw new Error("needs implementation or deletion");
+    public insert(i: number, c: string): void {
+        let num = this.getNoComponents()
+        try {
+            IllegalArgumentException.assert(i >= 0 && i <= this.components.length, "i is out of bounds");
+        }
+        catch (e) {
+            return
+        }
+        this.components.splice(i,0,c);
+        MethodFailedException.assert(this.getNoComponents() > num);
+    }
+    
+    public append(c: string): void {
+        let num = this.getNoComponents()
+        this.components[this.components.length] = c;
+        MethodFailedException.assert(this.getNoComponents() > num);
     }
 
-    public append(c: string) {
-        throw new Error("needs implementation or deletion");
-    }
-
-    public remove(i: number) {
-        throw new Error("needs implementation or deletion");
-    }
-
-    public concat(other: Name): void {
-        throw new Error("needs implementation or deletion");
+    public remove(i: number): void {
+        try {
+            IllegalArgumentException.assert(i >= 0 && i < this.components.length, "i is out of bounds");
+        }
+        catch (e) {
+            return
+        }
+        MethodFailedException.assert(this.components.splice(i,1).length == 1);
     }
 }
